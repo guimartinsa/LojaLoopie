@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useCarrinho } from '../services/CarrinhoContext';
+//import { useCarrinho } from '../services/CarrinhoContext';
 
 interface Produto {
     id: number;
@@ -11,10 +11,15 @@ interface Produto {
 
 interface CardProdutoProps {
     produto: Produto;
+    onAdicionar: () => void;
 }
 
-const CardProduto: React.FC<CardProdutoProps> = ({ produto }) => {
-    const { adicionarAoCarrinho } = useCarrinho();
+const CardProduto: React.FC<CardProdutoProps> = ({ produto, onAdicionar }) => {
+    //const { adicionarAoCarrinho } = useCarrinho();
+    /*const handleClick = () => {
+        console.log(`Produto adicionado ao carrinho: ${produto.nome}`);
+        onAdicionar();
+    };*/
 
     return (
         <div className="card">
@@ -23,7 +28,7 @@ const CardProduto: React.FC<CardProdutoProps> = ({ produto }) => {
                 <h3>{produto.nome}</h3>
                 <p>R$ {produto.preco}</p>
             </Link>
-            <button onClick={() => adicionarAoCarrinho(produto)}>
+            <button onClick={onAdicionar}>
                 Adicionar ao Carrinho
             </button>
         </div>

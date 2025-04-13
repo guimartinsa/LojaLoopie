@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+
 interface ImagemGaleria {
     id: number;
     imagem: string;

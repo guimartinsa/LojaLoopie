@@ -34,6 +34,7 @@ function Home() {
           key={produto.id}
           produto={produto}
           onAdicionar={() => adicionarAoCarrinho(produto)}
+          
         />
       ))}
     </section>
