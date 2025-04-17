@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import Produto, Categoria, Cliente, Endereco, ImagemProduto, Pedido, ItemPedido
 
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -21,8 +22,20 @@ class EnderecoSerializer(serializers.ModelSerializer):
 
 class ClienteSerializer(serializers.ModelSerializer):
     enderecos = EnderecoSerializer(many=True, read_only=True)
-    # Para criar endereços junto com o cliente (opcional)
     enderecos_data = EnderecoSerializer(many=True, write_only=True, required=False)
+    usuario = serializers.PrimaryKeyRelatedField(read_only=True)  # Só exibe o ID do user
+
+    class Meta:
+        model = Cliente
+        fields = ['id', 'usuario', 'nome', 'email', 'telefone', 'enderecos', 'enderecos_data']
+
+    def create(self, validated_data):
+        enderecos_data = validated_data.pop('enderecos_data', [])
+        user = self.context['request'].user  # <- pega o user logado (ex: em registro autenticado)
+        cliente = Cliente.objects.create(usuario=user, **validated_data)
+        for endereco in enderecos_data:
+            Endereco.objects.create(cliente=cliente, **endereco)
+        return cliente
 
     class Meta:
         model = Cliente
@@ -34,6 +47,22 @@ class ClienteSerializer(serializers.ModelSerializer):
         for endereco in enderecos_data:
             Endereco.objects.create(cliente=cliente, **endereco)
         return cliente
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            password=validated_data['password']
+        )
+        return user
+
 
 class ImagemProdutoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,12 +102,13 @@ class PedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
-        fields = ['id', 'cliente', 'data', 'status', 'total', 'itens']
+        fields = ['id', 'data', 'status', 'total', 'itens']
         read_only_fields = ['total', 'data']
 
     def create(self, validated_data):
         itens_data = validated_data.pop('itens')
-        pedido = Pedido.objects.create(**validated_data)
+        cliente = self.context['request'].user.cliente  # usa cliente do user logado
+        pedido = Pedido.objects.create(cliente=cliente, **validated_data)
 
         for item_data in itens_data:
             ItemPedido.objects.create(pedido=pedido, **item_data)

@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.html import mark_safe
+from django.contrib.auth.models import User
+
 
 
 class Categoria(models.Model):
@@ -62,6 +64,8 @@ class ImagemProduto(models.Model):
 # loja/models.py
 
 class Cliente(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    #usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nome = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=20, blank=True)
