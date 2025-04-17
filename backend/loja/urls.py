@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import ProdutoViewSet, CategoriaViewSet, ClienteViewSet, EnderecoViewSet, PedidoViewSet, ItemPedidoViewSet, RegistroView
+from .views import ProdutoViewSet, CategoriaViewSet, ClienteViewSet, EnderecoViewSet, PedidoViewSet, ItemPedidoViewSet, RegistroView, usuario_logado
 
 router = DefaultRouter()
 router.register(r'produtos', ProdutoViewSet)
@@ -14,5 +14,6 @@ router.register(r'itens-pedido', ItemPedidoViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('login/', obtain_auth_token),   # já vem do DRF
+    path('usuario-logado/', usuario_logado),
     path('registro/', RegistroView.as_view()),
 ]

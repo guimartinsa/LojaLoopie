@@ -5,6 +5,9 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Produto, Categoria, Cliente, Endereco
 from .serializers import ProdutoSerializer, CategoriaSerializer, ClienteSerializer, EnderecoSerializer
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+
 class ProdutoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
@@ -48,3 +51,12 @@ class PedidoViewSet(viewsets.ModelViewSet):
 class ItemPedidoViewSet(viewsets.ModelViewSet):
     queryset = ItemPedido.objects.all()
     serializer_class = ItemPedidoSerializer
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def usuario_logado(request):
+    return Response({
+        'id': request.user.id,
+        'username': request.user.username,
+        'email': request.user.email,
+    })
