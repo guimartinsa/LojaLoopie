@@ -1,18 +1,20 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Produto, Categoria, Cliente, Endereco
 from .serializers import ProdutoSerializer, CategoriaSerializer, ClienteSerializer, EnderecoSerializer
 
 class ProdutoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
+    permission_classes = [AllowAny]
     lookup_field = 'slug'  # <- isso aqui faz a mágica
 
 class CategoriaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+    permission_classes = [AllowAny]
 
 class RegistroView(APIView):
     def post(self, request):
