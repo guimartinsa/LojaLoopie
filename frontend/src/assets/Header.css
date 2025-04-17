@@ -1,0 +1,88 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border-bottom: 0.5px solid #3a2e2b;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 48px;
+    object-fit: contain;
+}
+
+/* Centraliza a barra de busca no header */
+.barra-centralizada {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Estilização da barra de busca (já atualizada) */
+.barra-de-busca {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.barra-de-busca input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    height: 36px;
+}
+
+/* Sugestões flutuantes */
+.sugestoes {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sugestoes li {
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sugestoes li img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.sugestoes li.selecionado,
+.sugestoes li:hover {
+    background-color: #eee;
+}
+
+/* Menu à direita */
+.menu {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}

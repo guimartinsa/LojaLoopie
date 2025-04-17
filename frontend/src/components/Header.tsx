@@ -1,10 +1,33 @@
-import logo from '../assets/logo.jpg';
+// src/components/Header.tsx
+import { Link, useNavigate } from "react-router-dom";
+import BarraDeBusca from "./BarraDeBusca";
+import "../assets/Header.css";
+import logo from "../assets/logo.jpg";
 
-export default function Header() {
+
+const Header = () => {
+    const navigate = useNavigate();
+
+    const handleBusca = (termo: string) => {
+        if (termo.trim()) {
+            navigate(`/busca?q=${encodeURIComponent(termo)}`);
+        }
+    };
+
     return (
-        <header className="bg-[#f6efe7] text-center py-8 relative z-[1]">
-            <img src={logo} alt="Banner Loopie" className="max-w-[300px] mx-auto" />
+        <header className="header">
+            <div className="logo">
+                <Link to="/">
+                    <img src={logo} alt="Loopie" className="logo-img" />
+                </Link>
+            </div>
+            <BarraDeBusca onBuscar={handleBusca} /> {/* 👈 Corrigido */}
+            <nav className="menu">
+                <Link to="/carrinho">Carrinho</Link>
+                <Link to="/login">Login</Link>
+            </nav>
         </header>
     );
-}
+};
 
+export default Header;

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import CardProduto from "../components/CardProduto";
 import { buscarProdutos } from "../utils/produtoService";
 import { useCarrinho } from "../services/CarrinhoContext";
+import Header from "../components/Header"; // ajuste o caminho se necessário
+import "../assets/Home.css"; // ajuste o caminho se necessário
+
 
 interface Produto {
   id: number;
@@ -28,17 +31,22 @@ function Home() {
   }, []);
 
   return (
-    <section className="produtos">
-      {produtos.map((produto) => (
-        <CardProduto
-          key={produto.id}
-          produto={produto}
-          onAdicionar={() => adicionarAoCarrinho(produto)}
-          
-        />
-      ))}
-    </section>
+    <>
+      <Header />
+      <section style={{ padding: "2rem" }}>
+        <div className="produtos">
+          {produtos.map((produto) => (
+            <CardProduto
+              key={produto.id}
+              produto={produto}
+              onAdicionar={() => adicionarAoCarrinho(produto)}
+            />
+          ))}
+        </div>
+      </section>
+    </>
   );
+  
 }
 
 export default Home;
